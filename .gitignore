@@ -1,0 +1,77 @@
+# -------------------------
+# CLion / JetBrains
+# -------------------------
+.idea/
+cmake-build-*/
+out/
+*.iml
+
+# -------------------------
+# CMake
+# -------------------------
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Testing/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+
+# Ninja build files
+.ninja_deps
+.ninja_log
+build.ninja
+rules.ninja
+
+# -------------------------
+# Qt / QML / MOC / RCC / UIC
+# -------------------------
+# Generated Qt files
+moc_*.cpp
+moc_*.h
+ui_*.h
+qrc_*.cpp
+
+# Qt Creator user files
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.qmlproject.user
+*.qmlproject.user.*
+
+# -------------------------
+# Windows
+# -------------------------
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# -------------------------
+# Logs / Temp
+# -------------------------
+*.log
+*.tmp
+*.temp
+
+# -------------------------
+# Executables / Binaries
+# -------------------------
+*.exe
+*.dll
+*.obj
+*.o
+*.a
+*.lib
+*.pdb
+*.ilk
+*.manifest
+
+# -------------------------
+# Misc
+# -------------------------
+*.cache
+*.swp
+*.DS_Store
