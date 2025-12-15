@@ -15,11 +15,13 @@ find_package(Qt6 COMPONENTS
         REQUIRED)
 
 add_executable(sundown_server src/main.cpp
-        src/domain/ShutdownSchedule.h
         src/domain/ShutdownScheduler.cpp
         src/domain/ShutdownScheduler.h
         src/infrastructure/WindowsShutdownExecutor.cpp
         src/infrastructure/WindowsShutdownExecutor.h
+        src/domain/IShutdownExecutor.h
+        src/app/Controller.cpp
+        src/app/Controller.h
 )
 target_link_libraries(sundown_server
         Qt::Core

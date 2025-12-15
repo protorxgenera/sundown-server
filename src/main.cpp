@@ -2,7 +2,7 @@
 #include <QCoreApplication>
 #include <QPushButton>
 
-#include "domain/ShutdownSchedule.h"
+#include "app/Controller.h"
 #include "domain/ShutdownScheduler.h"
 #include "infrastructure/WindowsShutdownExecutor.h"
 
@@ -13,38 +13,17 @@ int main(int argc, char *argv[])
     button.resize(200, 100);
     button.show();
 
-    // test 1: scheduler
-
-    ShutdownScheduler scheduler1;
-
-    QDateTime shutdownTime = QDateTime::currentDateTime().addSecs(3600);
-    scheduler1.scheduleAt(shutdownTime);
-
-    ShutdownSchedule schedule = scheduler1.currentSchedule();
-
-    qDebug() << "Active: " << schedule.active;
-    qDebug() << "Shutdown at: " << schedule.targetTime.toString();
-
-    scheduler1.cancel();
-
-    qDebug() << "After cancel, active: " << scheduler1.currentSchedule().active;
-    qDebug() << "After cancel, target time: " << scheduler1.currentSchedule().targetTime.toString();
-
-    // test 2: executor
-
-    ShutdownScheduler scheduler2;
     WindowsShutdownExecutor executor;
+    ShutdownScheduler scheduler;
+    QDateTime targetDate = QDateTime::currentDateTime().addSecs(3500);
 
-    QDateTime shutdownTime2 = QDateTime::currentDateTime().addSecs(3600);
-    scheduler2.scheduleAt(shutdownTime2);
+    Controller controller = Controller(executor, scheduler);
+    controller.scheduleShutdown(targetDate);
 
-    if (executor.scheduleShutdownAt(shutdownTime2))
-    {
-        qDebug() << "Shutdown scheduled";
-    } else
-    {
-        qDebug() << "Failed to schedule shutdown";
-    }
+    qDebug() << "Has schedule shutdown?: " << controller.hasScheduleShutdown();
+
+    // this line doesn't return anything, which means that the date is not passed as a reference, doesn't reach the Schedule class
+    qDebug() << "What is the scheduled time?: " << controller.scheduledTime().toString();
 
     return QApplication::exec();
 }

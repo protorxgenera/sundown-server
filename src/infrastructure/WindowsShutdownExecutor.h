@@ -2,11 +2,13 @@
 
 #include <QDateTime>
 
-class WindowsShutdownExecutor
+#include "../domain/IShutdownExecutor.h"
+
+class WindowsShutdownExecutor : public IShutdownExecutor
 {
 
     public:
-        bool scheduleShutdownAt(const QDateTime& targetTime);
-        bool cancelShutdown();
+        bool scheduleShutdownAt(const QDateTime& time) override;
+        bool cancelShutdown() override;
 
 };

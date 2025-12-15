@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ShutdownSchedule.h"
 #include <QDateTime>
 
 // Manages the scheduling logic. Doesn't perform the shutdown.
@@ -11,13 +10,17 @@ class ShutdownScheduler
     public:
         ShutdownScheduler();
 
-        void scheduleAt(const QDateTime& time);
+        bool scheduleAt(const QDateTime& time);
         void cancel();
 
-        ShutdownSchedule currentSchedule() const;
+        bool hasSchedule() const;
+        QDateTime scheduledTime() const;
+
 
     private:
-        ShutdownSchedule m_schedule;
+        bool m_active;
+        QDateTime m_targetTime;
+
 
 };
 
