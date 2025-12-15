@@ -14,7 +14,11 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(sundown_server src/main.cpp)
+add_executable(sundown_server src/main.cpp
+        src/domain/ShutdownSchedule.h
+        src/domain/ShutdownScheduler.cpp
+        src/domain/ShutdownScheduler.h
+)
 target_link_libraries(sundown_server
         Qt::Core
         Qt::Gui
