@@ -1,33 +1,35 @@
 #include "ShutdownScheduler.h"
 
-ShutdownScheduler::ShutdownScheduler() : m_active(false)
+ShutdownScheduler::ShutdownScheduler()
 {
+    m_state.active = false;
 }
 
-bool ShutdownScheduler::scheduleAt(const QDateTime &time)
+bool ShutdownScheduler::scheduleAt(const QDateTime &time, ShutdownOrigin origin)
 {
     if (!time.isValid() || time <= QDateTime::currentDateTime())
     {
         return false;
     }
-    m_active = true;
-    m_targetTime = time;
+    m_state.active = true;
+    m_state.targetTime = time;
+    m_state.origin = origin;
 
     return true;
 }
 
 void ShutdownScheduler::cancel()
 {
-    m_active = false;
-    m_targetTime = QDateTime();
+    m_state = ShutdownState{};
 }
 
-bool ShutdownScheduler::hasSchedule() const
+bool ShutdownScheduler::hasActiveShutdown() const
 {
-    return m_active;
+    return m_state.active;
 }
 
-QDateTime ShutdownScheduler::scheduledTime() const
+ShutdownState ShutdownScheduler::currentState() const
 {
-    return m_targetTime;
+    return m_state;
 }
+

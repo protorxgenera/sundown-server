@@ -35,12 +35,12 @@ bool Controller::cancelShutdown()
     return true;
 }
 
-bool Controller::hasScheduleShutdown() const
+bool Controller::hasActiveShutdown() const
 {
-    return m_scheduler.hasSchedule();
+    return m_scheduler.hasActiveShutdown();
 }
 
-QDateTime Controller::scheduledTime() const
+ShutdownState Controller::currentShutdown() const
 {
-    return m_scheduler.scheduledTime();
+    return m_scheduler.currentState();
 }

@@ -20,10 +20,10 @@ int main(int argc, char *argv[])
     Controller controller = Controller(executor, scheduler);
     controller.scheduleShutdown(targetDate);
 
-    qDebug() << "Has schedule shutdown?: " << controller.hasScheduleShutdown();
+    qDebug() << "Has schedule shutdown?: " << controller.hasActiveShutdown();
 
     // this line doesn't return anything, which means that the date is not passed as a reference, doesn't reach the Schedule class
-    qDebug() << "What is the scheduled time?: " << controller.scheduledTime().toString();
+    qDebug() << "What is the scheduled time?: " << controller.currentShutdown().toString();
 
     return QApplication::exec();
 }

@@ -4,6 +4,7 @@
 
 class IShutdownExecutor;
 class ShutdownScheduler;
+class ShutdownState;
 
 class Controller
 {
@@ -13,8 +14,8 @@ class Controller
         bool scheduleShutdown(const QDateTime& time);
         bool cancelShutdown();
 
-        bool hasScheduleShutdown() const;
-        QDateTime scheduledTime() const;
+        bool hasActiveShutdown() const;
+        ShutdownState currentShutdown() const;
 
     private:
         IShutdownExecutor& m_executor;

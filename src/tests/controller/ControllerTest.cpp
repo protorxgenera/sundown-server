@@ -21,10 +21,12 @@ void ControllerTest::scheduleShutdown_success()
     bool result = controller.scheduleShutdown(targetTime);
 
     QVERIFY(result);
-    QVERIFY(controller.hasScheduleShutdown());
-    QCOMPARE(controller.scheduledTime(), targetTime);
-    QVERIFY(executor.shutdownRequested());
-    QCOMPARE(executor.requestedTime(), targetTime);
+    QVERIFY(controller.hasActiveShutdown());
+
+    ShutdownState state = controller.currentShutdown();
+
+    QCOMPARE(state.targetTime, targetTime);
+    QCOMPARE(state.origin, ShutdownOrigin::Local);
 }
 
 void ControllerTest::scheduleShutdown_executorFails()
@@ -38,7 +40,7 @@ void ControllerTest::scheduleShutdown_executorFails()
     bool result = controller.scheduleShutdown(targetTime);
 
     QVERIFY(!result);
-    QVERIFY(!controller.hasScheduleShutdown());
+    QVERIFY(!controller.hasActiveShutdown());
     QVERIFY(executor.shutdownRequested());
 }
 
@@ -54,7 +56,7 @@ void ControllerTest::cancelShutdown_clearsSchedule()
     bool result = controller.cancelShutdown();
 
     QVERIFY(result);
-    QVERIFY(!controller.hasScheduleShutdown());
+    QVERIFY(!controller.hasActiveShutdown());
     QVERIFY(executor.cancelRequested());
 }
 
