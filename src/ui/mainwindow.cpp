@@ -62,8 +62,6 @@ void MainWindow::updateStatus()
 {
     const ShutdownState state = m_controller.currentShutdown();
 
-
-
     if (!state.active)
     {
         ui->pushStatus->setText("no shutdown scheduled");

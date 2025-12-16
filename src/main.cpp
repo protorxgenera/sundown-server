@@ -20,11 +20,8 @@ int main(int argc, char *argv[])
 
     FileShutdownStateRepository stateRepository;
     ShutdownScheduler scheduler(stateRepository);
-    QDateTime targetDate = QDateTime::currentDateTime().addSecs(3500);
 
     Controller controller = Controller(executor, scheduler);
-    // controller.scheduleShutdown(targetDate);
-    // controller.cancelShutdown();
 
     MainWindow window(controller);
     window.show();
