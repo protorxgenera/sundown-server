@@ -31,11 +31,17 @@ class MainWindow : public QMainWindow
     private slots:
         void onScheduleClicked();
         void onAbortClicked();
+        void onScheduleDetailsClicked();
+        void onDeviceDetailsClicked();
 
     private:
         Ui::MainWindow *ui;
-        void updateStatus();
         Controller& m_controller;
+
+        bool m_scheduleDetails = false;
+        bool m_deviceDetails = false;
+
+        void updateStatus();
 };
 
 
