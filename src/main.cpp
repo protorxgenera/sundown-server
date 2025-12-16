@@ -7,6 +7,7 @@
 #include "infrastructure/FileShutdownStateRepository.h"
 #include "infrastructure/InMemoryShutdownStateRepository.h"
 #include "infrastructure/WindowsShutdownExecutor.h"
+#include "ui/mainwindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,10 +16,6 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName("PROTORXGENERA");
     QCoreApplication::setApplicationName("Sundown Server");
 
-    QPushButton button("Hello world!", nullptr);
-    button.resize(200, 100);
-    button.show();
-
     WindowsShutdownExecutor executor;
 
     FileShutdownStateRepository stateRepository;
@@ -26,12 +23,12 @@ int main(int argc, char *argv[])
     QDateTime targetDate = QDateTime::currentDateTime().addSecs(3500);
 
     Controller controller = Controller(executor, scheduler);
-    controller.scheduleShutdown(targetDate);
+    // controller.scheduleShutdown(targetDate);
+    // controller.cancelShutdown();
 
-    qDebug() << "Has schedule shutdown?: " << controller.hasActiveShutdown();
+    MainWindow window(controller);
+    window.show();
 
-    // this line doesn't return anything, which means that the date is not passed as a reference, doesn't reach the Schedule class
-    qDebug() << "What is the scheduled time?: ";
 
     return QApplication::exec();
 }
