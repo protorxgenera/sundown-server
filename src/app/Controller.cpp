@@ -15,7 +15,7 @@ bool Controller::scheduleShutdown(const QDateTime &time)
         return false;
     }
 
-    if (m_executor.executeShutdownAt(time))
+    if (!m_executor.executeShutdownAt(time))
     {
         m_scheduler.cancel();
         return false;

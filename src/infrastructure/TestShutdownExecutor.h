@@ -22,6 +22,7 @@ class TestShutdownExecutor : public IShutdownExecutor
 
         void setExecuteResult(bool result);
 
+
     private:
         bool m_executeResult = true;
         bool m_shutdownCalled = false;

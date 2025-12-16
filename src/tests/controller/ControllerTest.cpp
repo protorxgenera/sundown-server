@@ -34,6 +34,7 @@ void ControllerTest::scheduleShutdown_executorFails()
     Controller controller(executor, scheduler);
 
     QDateTime targetTime = QDateTime::currentDateTime().addSecs(3400);
+    executor.setExecuteResult(false);
     bool result = controller.scheduleShutdown(targetTime);
 
     QVERIFY(!result);
@@ -56,3 +57,6 @@ void ControllerTest::cancelShutdown_clearsSchedule()
     QVERIFY(!controller.hasScheduleShutdown());
     QVERIFY(executor.cancelRequested());
 }
+
+QTEST_MAIN(ControllerTest)
+#include "ControllerTest.moc"
