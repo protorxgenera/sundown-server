@@ -8,7 +8,7 @@ class WindowsShutdownExecutor : public IShutdownExecutor
 {
 
     public:
-        bool scheduleShutdownAt(const QDateTime& time) override;
+        bool executeShutdownAt(const QDateTime& time) override;
         bool cancelShutdown() override;
 
 };

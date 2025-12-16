@@ -22,6 +22,10 @@ add_executable(sundown_server src/main.cpp
         src/domain/IShutdownExecutor.h
         src/app/Controller.cpp
         src/app/Controller.h
+        src/infrastructure/TestShutdownExecutor.cpp
+        src/infrastructure/TestShutdownExecutor.h
+        src/tests/controller/ControllerTest.cpp
+        src/tests/controller/ControllerTest.h
 )
 target_link_libraries(sundown_server
         Qt::Core

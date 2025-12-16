@@ -2,7 +2,7 @@
 
 #include <QProcess>
 
-bool WindowsShutdownExecutor::scheduleShutdownAt(const QDateTime &targetTime)
+bool WindowsShutdownExecutor::executeShutdownAt(const QDateTime &targetTime)
 {
     qint64 seconds = QDateTime::currentDateTime().secsTo(targetTime);
 
@@ -11,7 +11,11 @@ bool WindowsShutdownExecutor::scheduleShutdownAt(const QDateTime &targetTime)
         return false;
     }
 
-    return QProcess::startDetached("shutdown", {"-s", "-t", QString::number(seconds)});
+    QStringList args;
+
+    args << "-s" << "-t" << QString::number(seconds);
+
+    return QProcess::startDetached("shutdown", args);
 }
 
 bool WindowsShutdownExecutor::cancelShutdown()
