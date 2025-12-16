@@ -14,4 +14,6 @@ class ControllerTest : public QObject
         void scheduleShutdown_success();
 
         void scheduleShutdown_executorFails();
+
+        void cancelShutdown_clearsSchedule();
 };
