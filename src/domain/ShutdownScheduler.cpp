@@ -15,16 +15,22 @@ void ShutdownScheduler::loadInitialState()
     {
         m_state = ShutdownState::inactive();
     }
+
+    qDebug() << "ShutdownScheduler: initial state loaded";
 }
 
 
 bool ShutdownScheduler::scheduleAt(const QDateTime &time, ShutdownOrigin origin)
 {
+    qDebug() << "ShutdownScheduler: scheduleAt() hit";
+
     if (!time.isValid() || time <= QDateTime::currentDateTime())
     {
         return false;
     }
     m_state = ShutdownState::activeAt(time, origin);
+
+    qDebug() << "ShutdownScheduler: inside scheduleAt() right outside repo.save()";
     m_repository.save(m_state);
     return true;
 }

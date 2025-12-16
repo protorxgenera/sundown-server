@@ -33,6 +33,8 @@ add_executable(sundown_server
         src/domain/ShutdownState.h
         src/domain/IShutdownStateRepository.h
         src/infrastructure/InMemoryShutdownStateRepository.h
+        src/infrastructure/FileShutdownStateRepository.cpp
+        src/infrastructure/FileShutdownStateRepository.h
 )
 
 target_link_libraries(sundown_server
