@@ -12,4 +12,6 @@ class ControllerTest : public QObject
 
     private slots:
         void scheduleShutdown_success();
+
+        void scheduleShutdown_executorFails();
 };

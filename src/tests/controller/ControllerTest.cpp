@@ -26,3 +26,17 @@ void ControllerTest::scheduleShutdown_success()
     QVERIFY(executor.shutdownRequested());
     QCOMPARE(executor.requestedTime(), targetTime);
 }
+
+void ControllerTest::scheduleShutdown_executorFails()
+{
+    ShutdownScheduler scheduler;
+    TestShutdownExecutor executor;
+    Controller controller(executor, scheduler);
+
+    QDateTime targetTime = QDateTime::currentDateTime().addSecs(3400);
+    bool result = controller.scheduleShutdown(targetTime);
+
+    QVERIFY(!result);
+    QVERIFY(!controller.hasScheduleShutdown());
+    QVERIFY(executor.shutdownRequested());
+}
