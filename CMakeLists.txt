@@ -31,6 +31,7 @@ add_executable(sundown_server
         src/app/Controller.h
         src/domain/ShutdownState.cpp
         src/domain/ShutdownState.h
+        src/domain/IShutdownStateRepository.h
 )
 
 target_link_libraries(sundown_server

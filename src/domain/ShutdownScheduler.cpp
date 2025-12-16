@@ -1,8 +1,13 @@
 #include "ShutdownScheduler.h"
 
-ShutdownScheduler::ShutdownScheduler()
+ShutdownScheduler::ShutdownScheduler(IShutdownStateRepository& repository) : m_repository(repository)
 {
-    m_state.active = false;
+    if (auto loaded = m_repository.load()) {
+        m_state = *loaded;
+    } else
+    {
+        m_state = ShutdownState::inactive();
+    }
 }
 
 bool ShutdownScheduler::scheduleAt(const QDateTime &time, ShutdownOrigin origin)
@@ -11,16 +16,15 @@ bool ShutdownScheduler::scheduleAt(const QDateTime &time, ShutdownOrigin origin)
     {
         return false;
     }
-    m_state.active = true;
-    m_state.targetTime = time;
-    m_state.origin = origin;
-
+    m_state = ShutdownState::activeAt(time, origin);
+    m_repository.save(m_state);
     return true;
 }
 
 void ShutdownScheduler::cancel()
 {
-    m_state = ShutdownState{};
+    m_state = ShutdownState::inactive();
+    m_repository.clear();
 }
 
 bool ShutdownScheduler::hasActiveShutdown() const
