@@ -1,6 +1,7 @@
 #include "ControllerTest.h"
 
 #include "../../domain/ShutdownScheduler.h"
+#include "../../infrastructure/InMemoryShutdownStateRepository.h"
 
 /** verifies only controller logic
  * - scheduler is updated
@@ -13,7 +14,8 @@
 
 void ControllerTest::scheduleShutdown_success()
 {
-    ShutdownScheduler scheduler;
+    InMemoryShutdownStateRepository stateRepository;
+    ShutdownScheduler scheduler(stateRepository);
     TestShutdownExecutor executor;
     Controller controller(executor, scheduler);
 
@@ -31,7 +33,8 @@ void ControllerTest::scheduleShutdown_success()
 
 void ControllerTest::scheduleShutdown_executorFails()
 {
-    ShutdownScheduler scheduler;
+    InMemoryShutdownStateRepository stateRepository;
+    ShutdownScheduler scheduler(stateRepository);
     TestShutdownExecutor executor;
     Controller controller(executor, scheduler);
 
@@ -46,7 +49,8 @@ void ControllerTest::scheduleShutdown_executorFails()
 
 void ControllerTest::cancelShutdown_clearsSchedule()
 {
-    ShutdownScheduler scheduler;
+    InMemoryShutdownStateRepository stateRepository;
+    ShutdownScheduler scheduler(stateRepository);
     TestShutdownExecutor executor;
     Controller controller(executor, scheduler);
 

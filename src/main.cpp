@@ -4,6 +4,7 @@
 
 #include "app/Controller.h"
 #include "domain/ShutdownScheduler.h"
+#include "infrastructure/InMemoryShutdownStateRepository.h"
 #include "infrastructure/WindowsShutdownExecutor.h"
 
 int main(int argc, char *argv[])
@@ -14,7 +15,9 @@ int main(int argc, char *argv[])
     button.show();
 
     WindowsShutdownExecutor executor;
-    ShutdownScheduler scheduler;
+
+    InMemoryShutdownStateRepository stateRepository;
+    ShutdownScheduler scheduler(stateRepository);
     QDateTime targetDate = QDateTime::currentDateTime().addSecs(3500);
 
     Controller controller = Controller(executor, scheduler);

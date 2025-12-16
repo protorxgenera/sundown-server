@@ -10,7 +10,7 @@
 class ShutdownScheduler
 {
     public:
-        ShutdownScheduler(IShutdownStateRepository& repository);
+        explicit ShutdownScheduler(IShutdownStateRepository &repository);
 
         bool scheduleAt(const QDateTime &time, ShutdownOrigin origin = ShutdownOrigin::Local);
 
@@ -20,8 +20,9 @@ class ShutdownScheduler
 
         ShutdownState currentState() const;
 
-
     private:
+        void loadInitialState();
+
         ShutdownState m_state;
-        IShutdownStateRepository& m_repository;
+        IShutdownStateRepository &m_repository;
 };
