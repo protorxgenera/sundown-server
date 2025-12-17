@@ -12,7 +12,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>449</width>
+    <width>439</width>
     <height>499</height>
    </rect>
   </property>
@@ -275,7 +275,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>449</width>
+     <width>439</width>
      <height>22</height>
     </rect>
    </property>
@@ -311,6 +311,9 @@
    <addaction name="actionSettings"/>
   </widget>
   <action name="actionAbout">
+   <property name="icon">
+    <iconset theme="QIcon::ThemeIcon::HelpAbout"/>
+   </property>
    <property name="text">
     <string>About</string>
    </property>

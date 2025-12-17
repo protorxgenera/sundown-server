@@ -11,7 +11,7 @@ class Controller
     public:
         Controller(IShutdownExecutor& executor, ShutdownScheduler& scheduler);
 
-        bool scheduleShutdown(const QDateTime& time);
+        bool scheduleShutdown(const QDateTime& targetTime);
         bool cancelShutdown();
 
         bool hasActiveShutdown() const;

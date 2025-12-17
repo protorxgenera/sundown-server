@@ -22,7 +22,6 @@ void ShutdownScheduler::loadInitialState()
 
 bool ShutdownScheduler::scheduleAt(const QDateTime &time, ShutdownOrigin origin)
 {
-    qDebug() << "ShutdownScheduler: scheduleAt() hit";
 
     if (!time.isValid() || time <= QDateTime::currentDateTime())
     {

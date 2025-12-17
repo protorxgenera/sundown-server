@@ -1,6 +1,5 @@
 # Sundown - LAN Shutdown Server
 
----
 
 A lightweight Windows service application that allows scheduling and managing
 system shutdowns over a local network (LAN).

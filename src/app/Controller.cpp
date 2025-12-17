@@ -8,14 +8,19 @@ Controller::Controller(IShutdownExecutor &executor, ShutdownScheduler &scheduler
 {
 }
 
-bool Controller::scheduleShutdown(const QDateTime &time)
+bool Controller::scheduleShutdown(const QDateTime &targetTime)
 {
-    if (!m_scheduler.scheduleAt(time))
+    if (m_scheduler.hasActiveShutdown())
+    {
+        m_executor.cancelShutdown();
+    }
+
+    if (!m_scheduler.scheduleAt(targetTime))
     {
         return false;
     }
 
-    if (!m_executor.executeShutdownAt(time))
+    if (!m_executor.executeShutdownAt(targetTime))
     {
         m_scheduler.cancel();
         return false;

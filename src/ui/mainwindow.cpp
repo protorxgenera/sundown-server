@@ -16,6 +16,8 @@ MainWindow::MainWindow(Controller &controller, QWidget *parent) : QMainWindow(pa
     ui->pushStatus->setStyleSheet("text-align:left;");
     ui->pushDevice->setStyleSheet("text-align:left;");
 
+    ui->statusBar->showMessage("Version 0.1.0");
+
     connect(ui->btnSchedule, &QPushButton::clicked, this, &MainWindow::onScheduleClicked);
     connect(ui->btnAbort, &QPushButton::clicked, this, &MainWindow::onAbortClicked);
     connect(ui->pushStatus, &QPushButton::clicked, this, &MainWindow::onScheduleDetailsClicked);
