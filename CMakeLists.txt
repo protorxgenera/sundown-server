@@ -12,6 +12,7 @@ set(CMAKE_PREFIX_PATH "C:/Qt/6.10.0/mingw_64")
 find_package(Qt6 COMPONENTS
         Core
         Gui
+        Network
         Widgets
         Test
         REQUIRED)
@@ -38,11 +39,16 @@ add_executable(sundown_server
         src/ui/mainwindow.cpp
         src/ui/mainwindow.h
         src/ui/mainwindow.ui
+        src/infrastructure/network/discovery/DiscoveryBroadcaster.cpp
+        src/infrastructure/network/discovery/DiscoveryBroadcaster.h
+        src/app/ServerController.cpp
+        src/app/ServerController.h
 )
 
 target_link_libraries(sundown_server
         Qt::Core
         Qt::Gui
+        Qt::Network
         Qt::Widgets
 )
 

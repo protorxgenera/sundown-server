@@ -3,6 +3,7 @@
 #include <QPushButton>
 
 #include "app/Controller.h"
+#include "app/ServerController.h"
 #include "domain/ShutdownScheduler.h"
 #include "infrastructure/FileShutdownStateRepository.h"
 #include "infrastructure/InMemoryShutdownStateRepository.h"
@@ -15,6 +16,9 @@ int main(int argc, char *argv[])
 
     QCoreApplication::setOrganizationName("PROTORXGENERA");
     QCoreApplication::setApplicationName("Sundown Server");
+
+    ServerController server;
+    server.start();
 
     WindowsShutdownExecutor executor;
 
