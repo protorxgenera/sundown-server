@@ -1,18 +1,23 @@
 #include "ServerController.h"
 #include "../networking/discovery/domain/DiscoveredServer.h"
+#include "../networking/messaging/infrastructure/JsonSerializer.h"
 
 ServerController::ServerController(QObject *parent) : QObject(parent), m_broadcaster(
                                                           "Sundown Server", "server-uuid-1234",
                                                           static_cast<quint16>(50505)), m_discoveryListener(static_cast<quint16>(50505))
 {
     connect(&m_discoveryListener, &UdpDiscoveryListener::serverDiscovered, this, &ServerController::onServerDiscovered);
+    connect(&m_tcpServer, &TcpServer::sessionCreated, this, &ServerController::onSessionCreated);
 }
 
 void ServerController::start()
 {
     m_broadcaster.start();
     m_discoveryListener.start();
+    m_tcpServer.listen(QHostAddress::Any, 60000);
+
     simulateDiscovery();
+
 }
 
 void ServerController::stop()
@@ -51,4 +56,11 @@ void ServerController::simulateDiscovery()
 const DiscoveredServerRegistry& ServerController::registry() const
 {
     return m_registry;
+}
+
+void ServerController::onSessionCreated(TcpSession* session)
+{
+    auto snapshot = JsonSerializer::serializeState(m_state);
+    session->send(snapshot);
+
 }
