@@ -43,6 +43,10 @@ add_executable(sundown_server
         src/infrastructure/network/discovery/DiscoveryBroadcaster.h
         src/app/ServerController.cpp
         src/app/ServerController.h
+        src/infrastructure/network/discovery/DiscoveryPacket.h
+        src/infrastructure/network/discovery/IDiscoveryListener.h
+        src/infrastructure/network/discovery/UdpDiscoveryListener.cpp
+        src/infrastructure/network/discovery/UdpDiscoveryListener.h
 )
 
 target_link_libraries(sundown_server
