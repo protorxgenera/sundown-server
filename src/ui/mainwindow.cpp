@@ -7,9 +7,12 @@
 #include "mainwindow.h"
 #include "ui_MainWindow.h"
 
+#include "../app/ServerController.h"
 
-MainWindow::MainWindow(Controller &controller, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow),
-                                                                  m_controller(controller)
+
+MainWindow::MainWindow(Controller &controller, ServerController &serverController,
+                       QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow),
+                                          m_controller(controller), m_serverController(serverController)
 {
     ui->setupUi(this);
 
@@ -22,8 +25,11 @@ MainWindow::MainWindow(Controller &controller, QWidget *parent) : QMainWindow(pa
     connect(ui->btnAbort, &QPushButton::clicked, this, &MainWindow::onAbortClicked);
     connect(ui->pushStatus, &QPushButton::clicked, this, &MainWindow::onScheduleDetailsClicked);
     connect(ui->pushDevice, &QPushButton::clicked, this, &MainWindow::onDeviceDetailsClicked);
+    connect(&m_serverController.registry(), &DiscoveredServerRegistry::serversChanged, this,
+            &MainWindow::refreshDiscoveredServers);
 
     updateStatus();
+    refreshDiscoveredServers();
 }
 
 MainWindow::~MainWindow()
@@ -76,7 +82,8 @@ void MainWindow::updateStatus()
             ui->pushStatus->setText(state.targetTime.toString(Qt::TextDate));
         } else
         {
-            ui->pushStatus->setText(QString::number(QDateTime::currentDateTime().secsTo(state.targetTime)/60) + " minutes to shutdown");
+            ui->pushStatus->setText(
+                QString::number(QDateTime::currentDateTime().secsTo(state.targetTime) / 60) + " minutes to shutdown");
         }
 
         if (m_deviceDetails)
@@ -88,6 +95,20 @@ void MainWindow::updateStatus()
         }
 
         ui->btnAbort->setDisabled(false);
+    }
+}
 
+void MainWindow::refreshDiscoveredServers()
+{
+    ui->listDiscoveredServers->clear();
+
+    const auto servers = m_serverController.registry().servers();
+    for (const DiscoveredServer &server: servers)
+    {
+        QString item = QString("%1, (%2, %3)")
+                .arg(server.deviceName)
+                .arg(server.deviceId)
+                .arg(server.port);
+        ui->listDiscoveredServers->addItem(item);
     }
 }

@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 
     Controller controller = Controller(executor, scheduler);
 
-    MainWindow window(controller);
+    MainWindow window(controller, server);
     window.show();
 
 

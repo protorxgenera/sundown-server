@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>439</width>
-    <height>499</height>
+    <height>587</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -236,6 +236,16 @@
        <string/>
       </property>
      </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Discovered Servers:</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QListWidget" name="listDiscoveredServers"/>
     </item>
     <item>
      <spacer name="verticalSpacer">

@@ -47,3 +47,8 @@ void ServerController::simulateDiscovery()
 
     m_registry.updateFromDiscovery(testServer);
 }
+
+const DiscoveredServerRegistry& ServerController::registry() const
+{
+    return m_registry;
+}

@@ -17,6 +17,8 @@ class ServerController : public QObject
 
         void simulateDiscovery();
 
+        const DiscoveredServerRegistry& registry() const;
+
     public slots:
         void onServerDiscovered(const DiscoveryPacket& packet);
 
@@ -24,4 +26,5 @@ class ServerController : public QObject
         DiscoveryBroadcaster m_broadcaster;
         UdpDiscoveryListener m_discoveryListener;
         DiscoveredServerRegistry m_registry;
+
 };

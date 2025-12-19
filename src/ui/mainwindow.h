@@ -10,6 +10,7 @@
 #include "../shutdown/domain/ShutdownState.h"
 
 
+class ServerController;
 QT_BEGIN_NAMESPACE
 
 namespace Ui
@@ -24,7 +25,7 @@ class MainWindow : public QMainWindow
         Q_OBJECT
 
     public:
-        explicit MainWindow(Controller &controller, QWidget *parent = nullptr);
+        explicit MainWindow(Controller &controller, ServerController &serverController, QWidget *parent = nullptr);
 
         ~MainWindow() override;
 
@@ -33,10 +34,12 @@ class MainWindow : public QMainWindow
         void onAbortClicked();
         void onScheduleDetailsClicked();
         void onDeviceDetailsClicked();
+        void refreshDiscoveredServers();
 
     private:
         Ui::MainWindow *ui;
         Controller& m_controller;
+        ServerController& m_serverController;
 
         bool m_scheduleDetails = false;
         bool m_deviceDetails = false;
