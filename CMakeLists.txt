@@ -47,6 +47,8 @@ add_executable(sundown_server
         src/discovery/infrastructure/UdpDiscoveryListener.cpp
         src/discovery/infrastructure/UdpDiscoveryListener.h
         src/discovery/domain/DiscoveredServer.h
+        src/discovery/domain/DiscoveredServerRegistry.cpp
+        src/discovery/domain/DiscoveredServerRegistry.h
 )
 
 target_link_libraries(sundown_server

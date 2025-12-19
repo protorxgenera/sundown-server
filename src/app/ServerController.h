@@ -1,4 +1,5 @@
 #pragma once
+#include "../discovery/domain/DiscoveredServerRegistry.h"
 #include "../discovery/infrastructure/DiscoveryBroadcaster.h"
 #include "../discovery/infrastructure/UdpDiscoveryListener.h"
 
@@ -14,10 +15,13 @@ class ServerController : public QObject
 
         void stop();
 
+        void simulateDiscovery();
+
     public slots:
         void onServerDiscovered(const DiscoveryPacket& packet);
 
     private:
         DiscoveryBroadcaster m_broadcaster;
         UdpDiscoveryListener m_discoveryListener;
+        DiscoveredServerRegistry m_registry;
 };

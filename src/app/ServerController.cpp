@@ -12,6 +12,7 @@ void ServerController::start()
 {
     m_broadcaster.start();
     m_discoveryListener.start();
+    simulateDiscovery();
 }
 
 void ServerController::stop()
@@ -29,6 +30,20 @@ void ServerController::onServerDiscovered(const DiscoveryPacket& packet)
     server.port = packet.serverPort;
     server.lastSeen = QDateTime::currentDateTimeUtc();
 
+    m_registry.updateFromDiscovery(server);
+
     qDebug() << server.port;
 
+}
+
+void ServerController::simulateDiscovery()
+{
+    DiscoveredServer testServer;
+    testServer.deviceId = "testId";
+    testServer.deviceName = "testDevice";
+    testServer.address = QHostAddress("192.168.1.42");
+    testServer.port = 50505;
+    testServer.lastSeen = QDateTime::currentDateTimeUtc();
+
+    m_registry.updateFromDiscovery(testServer);
 }
