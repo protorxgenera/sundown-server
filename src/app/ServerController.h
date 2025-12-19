@@ -26,6 +26,8 @@ class ServerController : public QObject
 
         void onSessionCreated(TcpSession *session) const;
 
+        void onMessageReceived(const ProtocolMessage& msg);
+
     private:
         DiscoveryBroadcaster m_broadcaster;
         UdpDiscoveryListener m_discoveryListener;

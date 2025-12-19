@@ -66,3 +66,15 @@ void ServerController::onSessionCreated(TcpSession* session) const
     session->send(snapshot);
 
 }
+
+void ServerController::onMessageReceived(const ProtocolMessage &msg)
+{
+    // switch (msg.type)
+    // {
+    //     case ProtocolMessageType::PairingRequest:
+    //         handlePairingRequest(msg);
+    //         break;
+    //     default:
+    //         sendError("UNSUPPORTED MESSAGE");
+    // }
+}
