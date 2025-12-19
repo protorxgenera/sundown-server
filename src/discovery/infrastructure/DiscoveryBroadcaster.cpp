@@ -35,6 +35,7 @@ void DiscoveryBroadcaster::stop()
 void DiscoveryBroadcaster::setupSocket()
 {
     m_socket.setSocketOption(QAbstractSocket::MulticastTtlOption, QVariant(1));
+    m_socket.setSocketOption(QAbstractSocket::MulticastLoopbackOption, 1);
 }
 
 void DiscoveryBroadcaster::broadcast()

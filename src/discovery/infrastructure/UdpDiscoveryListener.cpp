@@ -13,6 +13,7 @@ void UdpDiscoveryListener::start()
 {
     m_socket.bind(QHostAddress::AnyIPv4, m_listenPort, QUdpSocket::ShareAddress);
     connect(&m_socket, &QUdpSocket::readyRead, this, &UdpDiscoveryListener::onReadyRead);
+    qDebug() << "UDP Discovery Listener started on port" << m_listenPort;
 }
 
 void UdpDiscoveryListener::stop()

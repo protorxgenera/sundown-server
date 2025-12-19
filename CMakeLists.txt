@@ -38,14 +38,15 @@ add_executable(sundown_server
         src/ui/mainwindow.cpp
         src/ui/mainwindow.h
         src/ui/mainwindow.ui
-        src/discovery/ports/DiscoveryBroadcaster.cpp
-        src/discovery/ports/DiscoveryBroadcaster.h
+        src/discovery/infrastructure/DiscoveryBroadcaster.cpp
+        src/discovery/infrastructure/DiscoveryBroadcaster.h
         src/app/ServerController.cpp
         src/app/ServerController.h
-        src/discovery/ports/DiscoveryPacket.h
+        src/discovery/infrastructure/DiscoveryPacket.h
         src/discovery/ports/IDiscoveryListener.h
         src/discovery/infrastructure/UdpDiscoveryListener.cpp
         src/discovery/infrastructure/UdpDiscoveryListener.h
+        src/discovery/domain/DiscoveredServer.h
 )
 
 target_link_libraries(sundown_server

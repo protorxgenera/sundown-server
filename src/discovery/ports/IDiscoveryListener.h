@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DiscoveryPacket.h"
+#include "../infrastructure/DiscoveryPacket.h"
 
 class IDiscoveryListener : public QObject
 {

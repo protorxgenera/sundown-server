@@ -12,6 +12,7 @@ class UdpDiscoveryListener : public IDiscoveryListener
 
         void start() override;
         void stop() override;
+
     private slots:
         void onReadyRead();
 

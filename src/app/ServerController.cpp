@@ -1,17 +1,34 @@
 #include "ServerController.h"
+#include "../discovery/domain/DiscoveredServer.h"
 
 ServerController::ServerController(QObject *parent) : QObject(parent), m_broadcaster(
                                                           "Sundown Server", "server-uuid-1234",
-                                                          static_cast<quint16>(50505))
+                                                          static_cast<quint16>(50505)), m_discoveryListener(static_cast<quint16>(50505))
 {
+    connect(&m_discoveryListener, &UdpDiscoveryListener::serverDiscovered, this, &ServerController::onServerDiscovered);
 }
 
 void ServerController::start()
 {
     m_broadcaster.start();
+    m_discoveryListener.start();
 }
 
 void ServerController::stop()
 {
     m_broadcaster.stop();
+    m_discoveryListener.stop();
+}
+
+void ServerController::onServerDiscovered(const DiscoveryPacket& packet)
+{
+    DiscoveredServer server;
+    server.deviceId = packet.deviceId;
+    server.deviceName = packet.deviceName;
+    server.address = packet.senderAddress;
+    server.port = packet.serverPort;
+    server.lastSeen = QDateTime::currentDateTimeUtc();
+
+    qDebug() << server.port;
+
 }
