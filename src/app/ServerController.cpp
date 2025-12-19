@@ -8,6 +8,7 @@ ServerController::ServerController(QObject *parent) : QObject(parent), m_broadca
 {
     connect(&m_discoveryListener, &UdpDiscoveryListener::serverDiscovered, this, &ServerController::onServerDiscovered);
     connect(&m_tcpServer, &TcpServer::sessionCreated, this, &ServerController::onSessionCreated);
+    // Ignore clang here. False positive
 }
 
 void ServerController::start()
@@ -58,7 +59,8 @@ const DiscoveredServerRegistry& ServerController::registry() const
     return m_registry;
 }
 
-void ServerController::onSessionCreated(TcpSession* session)
+void ServerController::onSessionCreated(TcpSession* session) const
+
 {
     auto snapshot = JsonSerializer::serializeState(m_state);
     session->send(snapshot);

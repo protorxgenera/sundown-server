@@ -24,7 +24,7 @@ class ServerController : public QObject
     public slots:
         void onServerDiscovered(const DiscoveryPacket &packet);
 
-        void onSessionCreated(TcpSession *session);
+        void onSessionCreated(TcpSession *session) const;
 
     private:
         DiscoveryBroadcaster m_broadcaster;
