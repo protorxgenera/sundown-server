@@ -1,7 +1,7 @@
 #pragma once
-#include "../discovery/domain/DiscoveredServerRegistry.h"
-#include "../discovery/infrastructure/DiscoveryBroadcaster.h"
-#include "../discovery/infrastructure/UdpDiscoveryListener.h"
+#include "../networking/discovery/domain/DiscoveredServerRegistry.h"
+#include "../networking/discovery/infrastructure/DiscoveryBroadcaster.h"
+#include "../networking/discovery/infrastructure/UdpDiscoveryListener.h"
 
 
 class ServerController : public QObject

@@ -1,5 +1,5 @@
 #include "ServerController.h"
-#include "../discovery/domain/DiscoveredServer.h"
+#include "../networking/discovery/domain/DiscoveredServer.h"
 
 ServerController::ServerController(QObject *parent) : QObject(parent), m_broadcaster(
                                                           "Sundown Server", "server-uuid-1234",
