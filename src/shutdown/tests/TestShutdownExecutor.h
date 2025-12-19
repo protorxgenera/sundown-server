@@ -1,5 +1,5 @@
 #pragma once
-#include "../domain/IShutdownExecutor.h"
+#include "../ports/IShutdownExecutor.h"
 
 // no business logic
 // simulates success or failure

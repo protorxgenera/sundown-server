@@ -1,11 +1,10 @@
 #pragma once
 
-#include <QDateTime>
-
-#include "IShutdownStateRepository.h"
 #include "ShutdownState.h"
 
 // Manages the scheduling logic. Doesn't perform the shutdown.
+
+class IShutdownStateRepository;
 
 class ShutdownScheduler
 {

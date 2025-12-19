@@ -1,4 +1,5 @@
 #include "ShutdownScheduler.h"
+#include "../ports/IShutdownStateRepository.h"
 
 ShutdownScheduler::ShutdownScheduler(IShutdownStateRepository &repository) : m_repository(repository)
 {

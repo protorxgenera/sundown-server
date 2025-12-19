@@ -3,8 +3,8 @@
 #include <QtTest/QtTest>
 #include <QDateTime>
 #include "../../app/Controller.h"
-#include "../../domain/ShutdownScheduler.h"
-#include "../../infrastructure/TestShutdownExecutor.h"
+#include "../../shutdown/domain/ShutdownScheduler.h"
+#include "../../shutdown/tests/TestShutdownExecutor.h"
 
 class ControllerTest : public QObject
 {

@@ -4,10 +4,10 @@
 
 #include "app/Controller.h"
 #include "app/ServerController.h"
-#include "domain/ShutdownScheduler.h"
-#include "infrastructure/FileShutdownStateRepository.h"
-#include "infrastructure/InMemoryShutdownStateRepository.h"
-#include "infrastructure/WindowsShutdownExecutor.h"
+#include "shutdown/domain/ShutdownScheduler.h"
+#include "shutdown/infrastructure/FileShutdownStateRepository.h"
+#include "shutdown/infrastructure/InMemoryShutdownStateRepository.h"
+#include "shutdown/infrastructure/WindowsShutdownExecutor.h"
 #include "ui/mainwindow.h"
 
 int main(int argc, char *argv[])

@@ -1,7 +1,7 @@
 #include "ControllerTest.h"
 
-#include "../../domain/ShutdownScheduler.h"
-#include "../../infrastructure/InMemoryShutdownStateRepository.h"
+#include "../../shutdown/domain/ShutdownScheduler.h"
+#include "../../shutdown/infrastructure/InMemoryShutdownStateRepository.h"
 
 /** verifies only controller logic
  * - scheduler is updated

@@ -5,7 +5,7 @@
 #include <qjsonparseerror.h>
 
 UdpDiscoveryListener::UdpDiscoveryListener(quint16 listenPort, QObject *parent) : IDiscoveryListener(parent),
-                                                                                  m_listenPort(listenPort)
+    m_listenPort(listenPort)
 {
 }
 
@@ -24,6 +24,9 @@ void UdpDiscoveryListener::onReadyRead()
 {
     while (m_socket.hasPendingDatagrams())
     {
+        // Flow:
+        // Socket → QByteArray → QJson → DiscoveryPacket → signal
+
         QByteArray datagram;
         datagram.resize(static_cast<int>(m_socket.pendingDatagramSize()));
 
@@ -51,5 +54,3 @@ void UdpDiscoveryListener::onReadyRead()
         emit serverDiscovered(packet);
     }
 }
-
-

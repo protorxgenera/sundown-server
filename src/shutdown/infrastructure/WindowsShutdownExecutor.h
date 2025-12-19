@@ -2,7 +2,7 @@
 
 #include <QDateTime>
 
-#include "../domain/IShutdownExecutor.h"
+#include "../ports/IShutdownExecutor.h"
 
 class WindowsShutdownExecutor : public IShutdownExecutor
 {

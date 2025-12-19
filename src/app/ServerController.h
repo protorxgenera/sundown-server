@@ -1,5 +1,5 @@
 #pragma once
-#include "../infrastructure/network/discovery/DiscoveryBroadcaster.h"
+#include "../discovery/ports/DiscoveryBroadcaster.h"
 
 class ServerController : public QObject
 {

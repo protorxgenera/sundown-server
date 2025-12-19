@@ -1,7 +1,7 @@
 #include "Controller.h"
 
-#include "../domain/IShutdownExecutor.h"
-#include "../domain/ShutdownScheduler.h"
+#include "../shutdown/ports/IShutdownExecutor.h"
+#include "../shutdown/domain/ShutdownScheduler.h"
 
 Controller::Controller(IShutdownExecutor &executor, ShutdownScheduler &scheduler) : m_executor(executor),
     m_scheduler(scheduler)

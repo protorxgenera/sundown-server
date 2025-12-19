@@ -7,7 +7,7 @@
 
 #include <QMainWindow>
 #include "../app/Controller.h"
-#include "../domain/ShutdownState.h"
+#include "../shutdown/domain/ShutdownState.h"
 
 
 QT_BEGIN_NAMESPACE

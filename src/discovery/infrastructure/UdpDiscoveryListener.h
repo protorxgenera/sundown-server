@@ -1,7 +1,7 @@
 #pragma once
 #include <QUdpSocket>
 
-#include "IDiscoveryListener.h"
+#include "../ports/IDiscoveryListener.h"
 
 class UdpDiscoveryListener : public IDiscoveryListener
 {

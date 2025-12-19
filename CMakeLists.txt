@@ -20,33 +20,32 @@ find_package(Qt6 COMPONENTS
 add_executable(sundown_server
         src/main.cpp
 
-        src/domain/ShutdownScheduler.cpp
-        src/domain/ShutdownScheduler.h
+        src/shutdown/domain/ShutdownScheduler.cpp
+        src/shutdown/domain/ShutdownScheduler.h
 
-        src/infrastructure/WindowsShutdownExecutor.cpp
-        src/infrastructure/WindowsShutdownExecutor.h
+        src/shutdown/infrastructure/WindowsShutdownExecutor.cpp
+        src/shutdown/infrastructure/WindowsShutdownExecutor.h
 
-        src/domain/IShutdownExecutor.h
+        src/shutdown/ports/IShutdownExecutor.h
 
         src/app/Controller.cpp
         src/app/Controller.h
-        src/domain/ShutdownState.cpp
-        src/domain/ShutdownState.h
-        src/domain/IShutdownStateRepository.h
-        src/infrastructure/InMemoryShutdownStateRepository.h
-        src/infrastructure/FileShutdownStateRepository.cpp
-        src/infrastructure/FileShutdownStateRepository.h
+        src/shutdown/domain/ShutdownState.h
+        src/shutdown/ports/IShutdownStateRepository.h
+        src/shutdown/infrastructure/InMemoryShutdownStateRepository.h
+        src/shutdown/infrastructure/FileShutdownStateRepository.cpp
+        src/shutdown/infrastructure/FileShutdownStateRepository.h
         src/ui/mainwindow.cpp
         src/ui/mainwindow.h
         src/ui/mainwindow.ui
-        src/infrastructure/network/discovery/DiscoveryBroadcaster.cpp
-        src/infrastructure/network/discovery/DiscoveryBroadcaster.h
+        src/discovery/ports/DiscoveryBroadcaster.cpp
+        src/discovery/ports/DiscoveryBroadcaster.h
         src/app/ServerController.cpp
         src/app/ServerController.h
-        src/infrastructure/network/discovery/DiscoveryPacket.h
-        src/infrastructure/network/discovery/IDiscoveryListener.h
-        src/infrastructure/network/discovery/UdpDiscoveryListener.cpp
-        src/infrastructure/network/discovery/UdpDiscoveryListener.h
+        src/discovery/ports/DiscoveryPacket.h
+        src/discovery/ports/IDiscoveryListener.h
+        src/discovery/infrastructure/UdpDiscoveryListener.cpp
+        src/discovery/infrastructure/UdpDiscoveryListener.h
 )
 
 target_link_libraries(sundown_server
@@ -59,11 +58,11 @@ target_link_libraries(sundown_server
 add_executable(ControllerTests
         src/tests/controller/ControllerTest.cpp
 
-        src/infrastructure/TestShutdownExecutor.cpp
-        src/infrastructure/TestShutdownExecutor.h
+        src/shutdown/tests/TestShutdownExecutor.cpp
+        src/shutdown/tests/TestShutdownExecutor.h
 
         src/app/Controller.cpp
-        src/domain/ShutdownScheduler.cpp
+        src/shutdown/domain/ShutdownScheduler.cpp
 )
 
 target_link_libraries(ControllerTests

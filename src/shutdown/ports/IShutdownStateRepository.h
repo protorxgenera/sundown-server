@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ShutdownState.h"
+#include "../domain/ShutdownState.h"
 #include <optional>
 
 class IShutdownStateRepository
