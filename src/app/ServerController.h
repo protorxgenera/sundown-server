@@ -21,12 +21,16 @@ class ServerController : public QObject
 
         const DiscoveredServerRegistry &registry() const;
 
+        void handlePairingRequest(TcpSession* session, const ProtocolMessage& msg);
+
+        void sendError(TcpSession* session, const QString& reason);
+
     public slots:
         void onServerDiscovered(const DiscoveryPacket &packet);
 
-        void onSessionCreated(TcpSession *session) const;
+        void onSessionCreated(TcpSession *session);
 
-        void onMessageReceived(const ProtocolMessage& msg);
+        void onMessageReceived(TcpSession *session, const ProtocolMessage &msg);
 
     private:
         DiscoveryBroadcaster m_broadcaster;

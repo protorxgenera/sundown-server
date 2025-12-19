@@ -4,7 +4,8 @@
 
 ServerController::ServerController(QObject *parent) : QObject(parent), m_broadcaster(
                                                           "Sundown Server", "server-uuid-1234",
-                                                          static_cast<quint16>(50505)), m_discoveryListener(static_cast<quint16>(50505))
+                                                          static_cast<quint16>(50505)),
+                                                      m_discoveryListener(static_cast<quint16>(50505))
 {
     connect(&m_discoveryListener, &UdpDiscoveryListener::serverDiscovered, this, &ServerController::onServerDiscovered);
     connect(&m_tcpServer, &TcpServer::sessionCreated, this, &ServerController::onSessionCreated);
@@ -18,7 +19,6 @@ void ServerController::start()
     m_tcpServer.listen(QHostAddress::Any, 60000);
 
     simulateDiscovery();
-
 }
 
 void ServerController::stop()
@@ -27,7 +27,7 @@ void ServerController::stop()
     m_discoveryListener.stop();
 }
 
-void ServerController::onServerDiscovered(const DiscoveryPacket& packet)
+void ServerController::onServerDiscovered(const DiscoveryPacket &packet)
 {
     DiscoveredServer server;
     server.deviceId = packet.deviceId;
@@ -39,7 +39,6 @@ void ServerController::onServerDiscovered(const DiscoveryPacket& packet)
     m_registry.updateFromDiscovery(server);
 
     qDebug() << server.port;
-
 }
 
 void ServerController::simulateDiscovery()
@@ -54,27 +53,47 @@ void ServerController::simulateDiscovery()
     m_registry.updateFromDiscovery(testServer);
 }
 
-const DiscoveredServerRegistry& ServerController::registry() const
+const DiscoveredServerRegistry &ServerController::registry() const
 {
     return m_registry;
 }
 
-void ServerController::onSessionCreated(TcpSession* session) const
-
+void ServerController::handlePairingRequest(TcpSession *session, const ProtocolMessage &msg)
 {
-    auto snapshot = JsonSerializer::serializeState(m_state);
-    session->send(snapshot);
-
+    Q_UNUSED(session)
+    Q_UNUSED(msg)
+    // TODO: implement pairing handshake
 }
 
-void ServerController::onMessageReceived(const ProtocolMessage &msg)
+void ServerController::sendError(TcpSession *session, const QString &reason)
 {
-    // switch (msg.type)
-    // {
-    //     case ProtocolMessageType::PairingRequest:
-    //         handlePairingRequest(msg);
-    //         break;
-    //     default:
-    //         sendError("UNSUPPORTED MESSAGE");
-    // }
+    ProtocolMessage err;
+    err.type = ProtocolMessageType::Error;
+    err.payload["message"] = reason;
+    err.correlationId = QUuid::createUuid().toString();
+
+    session->send(err);
+}
+
+void ServerController::onSessionCreated(TcpSession *session)
+
+{
+    ProtocolMessage snapshot;
+    snapshot.type = ProtocolMessageType::StateSnapshot;
+    snapshot.payload = JsonSerializer::serializeState(m_state);
+    snapshot.correlationId = QUuid::createUuid().toString();
+
+    session->send(snapshot);
+}
+
+void ServerController::onMessageReceived(TcpSession *session, const ProtocolMessage &msg)
+{
+    switch (msg.type)
+    {
+        case ProtocolMessageType::PairingRequest:
+            handlePairingRequest(session, msg);
+            break;
+        default:
+            sendError(session, "UNSUPPORTED MESSAGE");
+    }
 }
