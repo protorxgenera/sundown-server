@@ -1,7 +1,7 @@
 #pragma once
 #include <QTcpSocket>
-#include "../../messaging/domain/ProtocolMessage.h"
-#include "../../messaging/domain/SessionState.h"
+#include "../messaging/domain/ProtocolMessage.h"
+#include "../domain/SessionState.h"
 
 // responsibility: convert QTcpSocket -> JSON document -> ProtocolMessage
 

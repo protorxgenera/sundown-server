@@ -34,10 +34,12 @@ bool TcpSession::isAllowed(const ProtocolMessage &msg) const
     {
         case SessionState::Connected:
             return msg.type == ProtocolMessageType::PairingRequest;
-        case SessionState::PairingChallengeSent:
+        case SessionState::Pairing:
             return msg.type == ProtocolMessageType::PairingResponse;
         case SessionState::Paired:
             return true;
+        default:
+            return false;
     }
 }
 
@@ -45,8 +47,8 @@ void TcpSession::advanceState(const ProtocolMessage &msg)
 {
     if (m_state == SessionState::Connected & msg.type == ProtocolMessageType::PairingRequest)
     {
-        m_state = SessionState::PairingChallengeSent;
-    } else if (m_state == SessionState::PairingChallengeSent && msg.type == ProtocolMessageType::PairingResponse)
+        m_state = SessionState::Pairing;
+    } else if (m_state == SessionState::Pairing && msg.type == ProtocolMessageType::PairingResponse)
     {
         m_state = SessionState::Paired;
     }

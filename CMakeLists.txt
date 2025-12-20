@@ -49,15 +49,15 @@ add_executable(sundown_server
         src/networking/discovery/domain/DiscoveredServer.h
         src/networking/discovery/domain/DiscoveredServerRegistry.cpp
         src/networking/discovery/domain/DiscoveredServerRegistry.h
-        src/networking/messaging/domain/ServerState.h
-        src/networking/messaging/domain/ProtocolMessage.h
-        src/networking/messaging/infrastructure/JsonSerializer.h
-        src/networking/transport/tcp/TcpSession.cpp
-        src/networking/transport/tcp/TcpSession.h
-        src/networking/transport/tcp/TcpServer.cpp
-        src/networking/transport/tcp/TcpServer.h
-        src/networking/messaging/domain/ProtocolMessageType.h
-        src/networking/messaging/domain/SessionState.h
+        src/networking/session/messaging/domain/StateSnapshot.h
+        src/networking/session/messaging/domain/ProtocolMessage.h
+        src/networking/session/messaging/infrastructure/JsonSerializer.h
+        src/networking/session/transport/TcpSession.cpp
+        src/networking/session/transport/TcpSession.h
+        src/networking/session/transport/TcpServer.cpp
+        src/networking/session/transport/TcpServer.h
+        src/networking/session/messaging/domain/ProtocolMessageType.h
+        src/networking/session/domain/SessionState.h
 )
 
 target_link_libraries(sundown_server

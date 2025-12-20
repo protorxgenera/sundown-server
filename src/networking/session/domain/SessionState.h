@@ -5,6 +5,6 @@
 enum class SessionState
 {
     Connected,
-    PairingChallengeSent,
+    Pairing,
     Paired
 };

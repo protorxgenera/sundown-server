@@ -2,7 +2,7 @@
 
 #include <QDateTime>
 
-struct ServerState
+struct StateSnapshot
 {
     bool shutdownScheduled = false;
     QDateTime shutdownTime;

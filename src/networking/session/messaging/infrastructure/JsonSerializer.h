@@ -2,14 +2,14 @@
 #include <qbytearray.h>
 #include <QJsonObject>
 
-#include "../domain/ServerState.h"
+#include "../domain/StateSnapshot.h"
 
-struct ServerState;
+struct StateSnapshot;
 
 class JsonSerializer
 {
     public:
-        static QJsonObject serializeState(const ServerState& state)
+        static QJsonObject serializeState(const StateSnapshot& state)
         {
             QJsonObject obj;
             obj["shutdownScheduled"] = state.shutdownScheduled;

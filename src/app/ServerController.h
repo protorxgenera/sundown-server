@@ -2,8 +2,8 @@
 #include "../networking/discovery/domain/DiscoveredServerRegistry.h"
 #include "../networking/discovery/infrastructure/DiscoveryBroadcaster.h"
 #include "../networking/discovery/infrastructure/UdpDiscoveryListener.h"
-#include "../networking/transport/tcp/TcpServer.h"
-#include "../networking/messaging/domain/ServerState.h"
+#include "../networking/session/transport/TcpServer.h"
+#include "../networking/session/messaging/domain/StateSnapshot.h"
 
 
 class ServerController : public QObject
@@ -37,5 +37,5 @@ class ServerController : public QObject
         UdpDiscoveryListener m_discoveryListener;
         DiscoveredServerRegistry m_registry;
         TcpServer m_tcpServer;
-        ServerState m_state;
+        StateSnapshot m_state;
 };
