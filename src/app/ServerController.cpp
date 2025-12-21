@@ -7,24 +7,22 @@ ServerController::ServerController(QObject *parent) : QObject(parent), m_broadca
                                                           static_cast<quint16>(50505)),
                                                       m_discoveryListener(static_cast<quint16>(50505))
 {
-    connect(&m_discoveryListener, &UdpDiscoveryListener::serverDiscovered, this, &ServerController::onServerDiscovered);
-    connect(&m_tcpServer, &TcpServer::sessionCreated, this, &ServerController::onSessionCreated);
-    // Ignore clang here. False positive
 }
 
 void ServerController::start()
 {
+    connect(&m_discoveryListener, &UdpDiscoveryListener::serverDiscovered,
+            this, &ServerController::onServerDiscovered);
+
+    connect(&m_sessions, &SessionManager::sessionConnected, this, &ServerController::onSessionConnected);
+
+    connect(&m_sessions, &SessionManager::sessionDisconnected, this, &ServerController::onSessionDisconnected);
+
+    connect(&m_sessions, &SessionManager::protocolMessage, this, &ServerController::onProtocolMessage);
+
     m_broadcaster.start();
     m_discoveryListener.start();
-    m_tcpServer.listen(QHostAddress::Any, 60000);
-
-    simulateDiscovery();
-}
-
-void ServerController::stop()
-{
-    m_broadcaster.stop();
-    m_discoveryListener.stop();
+    m_sessions.start(60000);
 }
 
 void ServerController::onServerDiscovered(const DiscoveryPacket &packet)
@@ -37,63 +35,22 @@ void ServerController::onServerDiscovered(const DiscoveryPacket &packet)
     server.lastSeen = QDateTime::currentDateTimeUtc();
 
     m_registry.updateFromDiscovery(server);
-
-    qDebug() << server.port;
 }
 
-void ServerController::simulateDiscovery()
+void ServerController::onSessionConnected(SessionId id)
 {
-    DiscoveredServer testServer;
-    testServer.deviceId = "testId";
-    testServer.deviceName = "testDevice";
-    testServer.address = QHostAddress("192.168.1.42");
-    testServer.port = 50505;
-    testServer.lastSeen = QDateTime::currentDateTimeUtc();
-
-    m_registry.updateFromDiscovery(testServer);
+    qDebug() << "Session connected: " << id;
 }
 
-const DiscoveredServerRegistry &ServerController::registry() const
+void ServerController::onSessionDisconnected(SessionId id)
 {
-    return m_registry;
+    qDebug() << "Session disconnected: " << id;
 }
 
-void ServerController::handlePairingRequest(TcpSession *session, const ProtocolMessage &msg)
+void ServerController::onProtocolMessage(SessionId id, const ProtocolMessage &msg)
 {
-    Q_UNUSED(session)
+    Q_UNUSED(id)
     Q_UNUSED(msg)
-    // TODO: implement pairing handshake
-}
 
-void ServerController::sendError(TcpSession *session, const QString &reason)
-{
-    ProtocolMessage err;
-    err.type = ProtocolMessageType::Error;
-    err.payload["message"] = reason;
-    err.correlationId = QUuid::createUuid().toString();
-
-    session->send(err);
-}
-
-void ServerController::onSessionCreated(TcpSession *session)
-
-{
-    ProtocolMessage snapshot;
-    snapshot.type = ProtocolMessageType::StateSnapshot;
-    snapshot.payload = JsonSerializer::serializeState(m_state);
-    snapshot.correlationId = QUuid::createUuid().toString();
-
-    session->send(snapshot);
-}
-
-void ServerController::onMessageReceived(TcpSession *session, const ProtocolMessage &msg)
-{
-    switch (msg.type)
-    {
-        case ProtocolMessageType::PairingRequest:
-            handlePairingRequest(session, msg);
-            break;
-        default:
-            sendError(session, "UNSUPPORTED MESSAGE");
-    }
+    qDebug() << "Protocol message received";
 }

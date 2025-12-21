@@ -58,6 +58,9 @@ add_executable(sundown_server
         src/networking/session/transport/TcpServer.h
         src/networking/session/messaging/domain/ProtocolMessageType.h
         src/networking/session/domain/SessionState.h
+        src/networking/session/domain/SessionManager.cpp
+        src/networking/session/domain/SessionManager.h
+        src/networking/session/domain/SessionId.h
 )
 
 target_link_libraries(sundown_server

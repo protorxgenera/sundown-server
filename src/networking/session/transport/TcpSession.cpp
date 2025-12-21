@@ -2,6 +2,13 @@
 
 TcpSession::TcpSession(QTcpSocket *socket, QObject *parent) : QObject(parent), m_socket(socket)
 {
+    connect(m_socket, &QTcpSocket::readyRead,
+            this, &TcpSession::onReadyRead);
+
+    connect(m_socket, &QTcpSocket::disconnected, this, [this]()
+    {
+        emit disconnected(this);
+    });
 }
 
 void TcpSession::onReadyRead()
@@ -45,7 +52,7 @@ bool TcpSession::isAllowed(const ProtocolMessage &msg) const
 
 void TcpSession::advanceState(const ProtocolMessage &msg)
 {
-    if (m_state == SessionState::Connected & msg.type == ProtocolMessageType::PairingRequest)
+    if (m_state == SessionState::Connected && msg.type == ProtocolMessageType::PairingRequest)
     {
         m_state = SessionState::Pairing;
     } else if (m_state == SessionState::Pairing && msg.type == ProtocolMessageType::PairingResponse)
@@ -63,4 +70,12 @@ void TcpSession::send(const ProtocolMessage &msg)
 
     QJsonDocument doc(obj);
     m_socket->write(doc.toJson(QJsonDocument::Compact));
+}
+
+void TcpSession::onSocketDisconnected()
+{
+    emit disconnected(this);
+
+    m_socket->deleteLater();
+    deleteLater();
 }

@@ -3,7 +3,11 @@
 #include "../messaging/domain/ProtocolMessage.h"
 #include "../domain/SessionState.h"
 
-// responsibility: convert QTcpSocket -> JSON document -> ProtocolMessage
+/**
+ * Responsibility: convert QTcpSocket -> JSON document -> ProtocolMessage
+ *
+ * Owns: protocol rules, validation, and state transitions.
+ */
 
 class TcpSession : public QObject
 {
@@ -18,9 +22,11 @@ class TcpSession : public QObject
 
     signals:
         void messageReceived(TcpSession *session, const ProtocolMessage &msg);
+        void disconnected(TcpSession *session);
 
     public slots:
         void onReadyRead();
+        void onSocketDisconnected();
 
     private:
         bool isAllowed(const ProtocolMessage& msg) const;

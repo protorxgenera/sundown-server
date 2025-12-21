@@ -2,9 +2,13 @@
 #include "../networking/discovery/domain/DiscoveredServerRegistry.h"
 #include "../networking/discovery/infrastructure/DiscoveryBroadcaster.h"
 #include "../networking/discovery/infrastructure/UdpDiscoveryListener.h"
-#include "../networking/session/transport/TcpServer.h"
 #include "../networking/session/messaging/domain/StateSnapshot.h"
+#include "../networking/session/domain/SessionId.h"
+#include "../networking/session/domain/SessionManager.h"
 
+/**
+ * Owns: application behavior (pairing, scheduling, shutdown).
+ */
 
 class ServerController : public QObject
 {
@@ -13,29 +17,24 @@ class ServerController : public QObject
     public:
         explicit ServerController(QObject *parent = nullptr);
 
-        void start();
+        const DiscoveredServerRegistry& registry() const {return m_registry; }
 
+        void start();
         void stop();
 
-        void simulateDiscovery();
-
-        const DiscoveredServerRegistry &registry() const;
-
-        void handlePairingRequest(TcpSession* session, const ProtocolMessage& msg);
-
-        void sendError(TcpSession* session, const QString& reason);
-
     public slots:
-        void onServerDiscovered(const DiscoveryPacket &packet);
-
-        void onSessionCreated(TcpSession *session);
-
-        void onMessageReceived(TcpSession *session, const ProtocolMessage &msg);
+        void onSessionConnected(SessionId id);
+        void onSessionDisconnected(SessionId id);
+        void onProtocolMessage(SessionId id, const ProtocolMessage& msg);
+        void onServerDiscovered(const DiscoveryPacket& packet);
 
     private:
+        void handlePairingRequest(SessionId id, const ProtocolMessage& msg);
+        void sendError(SessionId id, const QString& reason);
+
         DiscoveryBroadcaster m_broadcaster;
         UdpDiscoveryListener m_discoveryListener;
         DiscoveredServerRegistry m_registry;
-        TcpServer m_tcpServer;
+        SessionManager m_sessions;
         StateSnapshot m_state;
 };

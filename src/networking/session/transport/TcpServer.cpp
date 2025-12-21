@@ -1,14 +1,27 @@
 #include "TcpServer.h"
 
-TcpServer::TcpServer(QObject *parent) : QTcpServer(parent)
+TcpServer::TcpServer(QObject *parent) : QObject(parent)
 {
+    connect(&m_server, &QTcpServer::newConnection, this, &TcpServer::onNewConnection);
 }
 
-void TcpServer::incomingConnection(qintptr socketDescriptor)
+bool TcpServer::start(quint16 port)
 {
-    auto* socket = new QTcpSocket(this);
-    socket->setSocketDescriptor(socketDescriptor);
+    return m_server.listen(QHostAddress::Any, port);
+}
 
-    auto* session = new TcpSession(socket, this);
-    emit sessionCreated(session);
+void TcpServer::stop()
+{
+    m_server.close();
+}
+
+void TcpServer::onNewConnection()
+{
+    while (m_server.hasPendingConnections())
+    {
+        QTcpSocket* socket = m_server.nextPendingConnection();
+
+        auto* session = new TcpSession(socket, this);
+        emit sessionCreated(session);
+    }
 }
