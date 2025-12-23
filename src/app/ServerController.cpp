@@ -49,8 +49,42 @@ void ServerController::onSessionDisconnected(SessionId id)
 
 void ServerController::onProtocolMessage(SessionId id, const ProtocolMessage &msg)
 {
-    Q_UNUSED(id)
-    Q_UNUSED(msg)
+    switch (msg.type)
+    {
+        case ProtocolMessageType::PairingRequest:
+            handlePairingRequest(id, msg);
+            break;
+        default:
+            sendError(id, "Unsupported message type");
+            break;
+    }
+}
 
-    qDebug() << "Protocol message received";
+void ServerController::handlePairingRequest(SessionId id, const ProtocolMessage &msg)
+{
+    qDebug() << "Handling pairing request from session" << id;
+
+    ProtocolMessage reply;
+    reply.type = ProtocolMessageType::PairingAccepted;
+    reply.correlationId = msg.correlationId;
+
+    QJsonObject payload;
+    payload["serverName"] = "Sundown Server";
+    payload["paired"] = true;
+
+    reply.payload = payload;
+    m_sessions.send(id, reply);
+}
+
+void ServerController::sendError(SessionId id, const QString &reason)
+{
+    ProtocolMessage msg;
+    msg.type = ProtocolMessageType::Error;
+    msg.correlationId = QUuid::createUuid().toString();
+
+    QJsonObject payload;
+    payload["reason"] = reason;
+    msg.payload = payload;
+
+    m_sessions.send(id, msg);
 }

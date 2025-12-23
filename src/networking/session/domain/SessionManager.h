@@ -40,17 +40,7 @@ class SessionManager : public QObject
     private slots:
         void onSessionCreated(TcpSession *session);
 
-        void onSessionDisconnected(TcpSession *session);
-
-        void onSessionMessage(TcpSession *session, const ProtocolMessage &msg);
-
     private:
-        struct SessionEntry
-        {
-            TcpSession *session = nullptr;
-            SessionState state = SessionState::Connected;
-        };
-
         TcpServer m_server;
-        QHash<SessionId, SessionEntry> m_sessions;
+        QHash<SessionId, TcpSession*> m_sessions;
 };

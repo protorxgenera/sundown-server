@@ -15,81 +15,42 @@ void SessionManager::start(quint16 port)
 void SessionManager::stop()
 {
     m_server.stop();
+
+    for (auto session: m_sessions)
+    {
+        session->deleteLater();
+    }
+
     m_sessions.clear();
 }
 
 void SessionManager::send(SessionId id, const ProtocolMessage &msg)
 {
-    auto it = m_sessions.find(id);
-    if (it == m_sessions.end()) return;
+    if (!m_sessions.contains(id)) return;
 
-    it.value().session->send(msg);
+    m_sessions[id]->send(msg);
 }
 
 void SessionManager::onSessionCreated(TcpSession *session)
 {
     SessionId id = QUuid::createUuid();
 
-    m_sessions.insert(id, SessionEntry{
-        .session = session,
-        .state = SessionState::Connected
-    });
+    m_sessions.insert(id, session);
 
     connect(session, &TcpSession::messageReceived,
             this, [this, id](TcpSession *session, const ProtocolMessage &msg)
             {
-                auto it = m_sessions.find(id);
-                if (it == m_sessions.end())
-                    return;
-
-                onSessionMessage(it.value().session, msg);
+                emit protocolMessage(id, msg);
             });
 
     connect(session, &TcpSession::disconnected,
             this, [this, id]()
             {
-                auto it = m_sessions.find(id);
-                if (it == m_sessions.end())
-                    return;
+                auto session = m_sessions.take(id);
+                session->deleteLater();
 
-                onSessionDisconnected(it->session);
+                emit sessionDisconnected(id);
             });
 
     emit sessionConnected(id);
-}
-
-void SessionManager::onSessionDisconnected(TcpSession *session)
-{
-    auto it = std::ranges::find_if(m_sessions, [session](const SessionEntry &e) { return e.session == session; });
-
-    if (it == m_sessions.end()) return;
-
-    SessionId id = it.key();
-    m_sessions.erase(it);
-
-    emit sessionDisconnected(id);
-}
-
-void SessionManager::onSessionMessage(TcpSession *session, const ProtocolMessage &msg)
-{
-    auto it = std::ranges::find_if(m_sessions,
-                                   [session](const SessionEntry &e)
-                                   {
-                                       return e.session == session;
-                                   });
-
-    if (it == m_sessions.end())
-        return;
-
-    SessionId id = it.key();
-    SessionState state = it->state;
-
-    // state-based validation
-    if (state == SessionState::Connected &&
-        msg.type != ProtocolMessageType::PairingRequest)
-    {
-        return; // silently drop or error
-    }
-
-    emit protocolMessage(id, msg);
 }
